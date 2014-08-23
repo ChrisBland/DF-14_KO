@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <link  rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" >
+    <script type="text/javascript" src="public/js/knockout-3.2.0.js"></script>
+    <script type="text/javascript" src="public/js/UserModel.js"></script>
+    <script type="text/javascript" src="public/js/OpportunityModel.js"></script>
+    <script type="text/javascript" src="public/js/ViewModel.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>User Dashboard</h1>
+      <a href="#" data-bind="click: $root.toggleDetails" class="btn btn-info"> Toggle Details </a>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Prospecting</th>
+            <th>Closed Lost</th>
+            <th>Closed Won</th>
+          </tr>
+        </thead>
+        <tbody data-bind="foreach: users.sort(function (l, r) { return l.won() < r.won() ? 1 : -1 })">
+          <tr>
+              <td>
+                <h4 data-bind="text: Name"></h4>
+              </td>
+              <td data-bind="text: formatCurrency(prospecting)"></td>
+              <td data-bind="text: formatCurrency(lost)"></td>
+              <td data-bind="text: formatCurrency(won)"></td>
+          </tr>
+          <tr data-bind="visible: $root.showDetails">
+            <td colspan="4">
+              <table class="table table-condensed table-striped">
+                <thead>
+                  <tr>
+                    <th>Opportunity</th>
+                    <th>Stage Name</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: opportunities">
+                  <tr>
+                    <td data-bind="text: Name"></td>
+                    <td data-bind="text: StageName"></td>
+                    <td data-bind="text: formatCurrency(Amount)"></td>
+                    <td>
+                      <a href="#" data-bind="click: $root.addMoney"> Add $1,000</a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>    
+        </tbody>
+      </table>
+    </div>
+  </body>
+  
+  <script type="text/javascript">
+    ko.applyBindings(new ForcasetViewModel());
+  </script>
+</html>

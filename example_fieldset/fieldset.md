@@ -45,16 +45,16 @@ The user would select a contact from a list to see the details of that contact:
 
 The *View* for a selected contact would like this:
 
-<dl data-bind="with: selectedContactDetail, visible: selectedContact">
-	<apex:repeat value="{!$ObjectType.Contact.FieldSets.ContactDetail}" var="f">
-		<dt>
-			<apex:outputText value="{!f.Label}" escape="false"/>
-		</dt>
-		<dd>
-			<span data-bind="{!IF(CONTAINS(f.type, 'date'), 'date', 'html')}: $data.{!f}"></span>
-		</dd>
-	</apex:repeat>
-</dl>
+	<dl data-bind="with: selectedContactDetail, visible: selectedContact">
+		<apex:repeat value="{!$ObjectType.Contact.FieldSets.ContactDetail}" var="f">
+			<dt>
+				<apex:outputText value="{!f.Label}" escape="false"/>
+			</dt>
+			<dd>
+				<span data-bind="{!IF(CONTAINS(f.type, 'date'), 'date', 'html')}: $data.{!f}"></span>
+			</dd>
+		</apex:repeat>
+	</dl>
 
 Which uses this custom binding:
 

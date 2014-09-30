@@ -1,0 +1,65 @@
+<apex:page standardController="Account" extensions="RolodexRemoting" showHeader="false" sidebar="false" standardStylesheets="false">
+
+	<link href="//dl.dropboxusercontent.com/u/18791682/DF/dfko.css" rel="stylesheet"/>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/knockout/3.1.0/knockout-min.js"/>
+
+	<script type="text/javascript">
+
+		function rolodexModel()
+		{
+			var self = this;
+
+			self.accountId = '{!Account.Id}';
+    		self.accountName =  '{!Account.Name}';
+			self.selected = ko.observable();
+
+			self.contacts = ko.observableArray();
+
+			RolodexRemoting.LoadContacts(self.accountId, function(result, event)
+			{
+				self.contacts(result);
+			});
+
+
+			self.selectContact = function(contact)
+			{
+				self.selected(contact);
+			};
+
+			self.clearSelection = function()
+			{
+				self.selected(null);
+			};
+
+			self.saveContact = function(contact)
+			{
+				RolodexRemoting.SaveContact(contact, function(result, event)
+				{
+					self.selected(null);
+				});
+			};
+		}
+
+		window.onload = function() { ko.applyBindings(new rolodexModel()) };
+	</script>
+
+	<div class="panel">
+		<h1 data-bind="text: accountName"></h1>
+
+		<div data-bind="foreach: contacts">
+			<div class="record" data-bind="click: $root.selectContact, css: {highlight : $data == $root.selected()}">
+				<h2 data-bind="text: Name"/>
+			</div>
+		</div>
+	</div>
+
+	<div class="panel right" data-bind="visible: selected, with: selected">
+		<h1 data-bind="text: Name"/>
+		<input data-bind="value: Phone"/>
+		<input data-bind="value: Email"/>
+
+		<button data-bind="click: $root.saveContact">Save</button>
+	</div>
+
+</apex:page>
